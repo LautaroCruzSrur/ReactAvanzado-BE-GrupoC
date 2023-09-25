@@ -27,7 +27,6 @@ const initApp = async () => {
 initApp()
 
 //MIDDLEWARE
-app.use(cookieParser());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -37,6 +36,7 @@ app.use(cors());
 
 //Aqui irian las rutas
 
+// app.use("/api/auth", authRoute); ejemplo de ruta
 
 //
 
