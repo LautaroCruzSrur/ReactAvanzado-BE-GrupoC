@@ -1,42 +1,59 @@
 import express, { request } from "express";
 import 'dotenv/config'
+import connectDB from "./database/db";
 import cors from 'cors'
 import morgan from "morgan";
 
 //creamos una instancia de express
 const app =express();
 
-// configuramos el puerto en el que se va a ejecutar nuestro back end
+const initApp = async () => {
+  try {
+    await connectDB();
+    app
+      .listen(app.get("port"), () => {
+        console.log(`Backend conectado al puerto: ${app.get("port")}`);
+      })
+      .on("error", (error) => {
+        console.log("ERROR:", error);
+        process.exit(1);
+      });
+  } catch (error) {
+    console.log("ERROR:", error);
+    process.exit(1);
+  }
+};
 
-app.set('port' , process.env.PORT || 5050 );
+initApp()
 
-//inicializamos el back end
+//MIDDLEWARE
+app.use(cookieParser());
 
-app.listen(app.get('port'), ()=>{
-  console.log(`BackEnd 46i listening to  port ${app.get('port')}`);
-}).on('error',(error)=>{
-  console.log('ERROR:', error);
-  process.exit(1);
-})
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-//MIDDELWARRES: condif extras del backend antes de que se ejecuten las rutas
+app.use(morgan("dev"));
+app.use(cors());
 
-//l-middle nativos de express
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "./upload",
+  })
+);
 
-app.use(express.json());//permite recibir obj en formato json
+//Aqui irian las rutas
 
-app.use(express.urlencoded({extended:true})); //permite recibir paramentros en las rutas
 
-//2-middel 3eros
+//
 
-app.use(morgan('dev')) // esto nos brinda detalles en nuestra terminal
-
-app.use(cors())// nos permite recibir peticiones remotas
-
-//primer endpoint o ruta de prueba
-
-app.get('/test', (req, res)=>{
-    console.log('Entro en Get Test');
-    // req.setEncoding({'Aqui ira mi respuesta'})
-    res.status(200).json({message: 'Aqui ira mi respuesta'});
-})
+app.use((err, req, res, next) => {
+  const errorStatus = err.status || 500;
+  const errorMessage = err.message || "Algo esta mal!";
+  return res.status(errorStatus).json({
+    success: false,
+    status: errorStatus,
+    message: errorMessage,
+    stack: err.stack,
+  });
+});
