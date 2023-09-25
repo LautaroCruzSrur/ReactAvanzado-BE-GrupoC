@@ -35,13 +35,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(cors());
 
-app.use(
-  fileUpload({
-    useTempFiles: true,
-    tempFileDir: "./upload",
-  })
-);
-
 //Aqui irian las rutas
 
 
