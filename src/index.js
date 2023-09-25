@@ -4,6 +4,7 @@ import connectDB from "./database/db";
 import cors from 'cors'
 import morgan from "morgan";
 import path from "path"
+
 //creamos una instancia de express
 const app = express();
 
@@ -36,6 +37,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname,'../public')))
 
 //Aqui irian las rutas
+
 
 // app.use("/api/auth", authRoute); ejemplo de ruta
 

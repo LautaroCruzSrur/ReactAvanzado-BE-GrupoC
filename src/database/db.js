@@ -4,8 +4,6 @@ import mongoose from "mongoose"
 const URI = process.env.URI; //Getting URI from .env
 const DB = process.env.DB; //Getting database name from .env
 
-//const url = 'mongodb://127.0.0.1:27017/adminGC'
-
 const connectDB = async () => {
   try {
     await mongoose.connect(`${URI}${DB}`, {
