@@ -7,6 +7,8 @@ import morgan from "morgan";
 //creamos una instancia de express
 const app =express();
 
+app.set("port", process.env.PORT || 5500);
+
 const initApp = async () => {
   try {
     await connectDB();
