@@ -38,6 +38,8 @@ app.use(cors());
 
 //Aqui irian las rutas
 
+
+
 // app.use("/api/auth", authRoute); ejemplo de ruta
 
 //
