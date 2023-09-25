@@ -3,13 +3,14 @@ import 'dotenv/config'
 import connectDB from "./database/db";
 import cors from 'cors'
 import morgan from "morgan";
-
+import path from "path"
 //creamos una instancia de express
-const app =express();
+const app = express();
 
 const initApp = async () => {
   try {
     await connectDB();
+    app.set("port", process.env.PORT || 4000);
     app
       .listen(app.get("port"), () => {
         console.log(`Backend conectado al puerto: ${app.get("port")}`);
@@ -30,9 +31,9 @@ initApp()
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(morgan("dev"));
 app.use(cors());
+app.use(express.static(path.join(__dirname,'../public')))
 
 //Aqui irian las rutas
 
